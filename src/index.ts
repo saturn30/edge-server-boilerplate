@@ -1,5 +1,6 @@
-import { Hono } from "hono";
-const app = new Hono();
+import { createApp } from "./utils/createApp";
+
+const app = createApp();
 
 app.get("/", (c) => c.text("Hello Hono!"));
 
