@@ -1,13 +1,16 @@
 {
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
+    "dev": "wrangler dev -e dev src/index.ts",
     "deploy": "wrangler deploy --minify src/index.ts"
   },
   "dependencies": {
+    "@libsql/client": "^0.4.0-pre.5",
+    "drizzle-orm": "^0.29.3",
     "hono": "^3.11.11"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
+    "drizzle-kit": "^0.20.9",
     "wrangler": "^3.22.0"
   }
 }
