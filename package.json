@@ -9,6 +9,7 @@
     "hono": "^3.11.11"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.4.1",
     "@cloudflare/workers-types": "^4.20231218.0",
     "drizzle-kit": "^0.20.9",
     "wrangler": "^3.22.0"
