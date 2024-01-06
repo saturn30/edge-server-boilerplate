@@ -1,3 +1,4 @@
+import { ApiError } from "../../utils/ApiError";
 import { createApp } from "../../utils/createApp";
 import { TodoService } from "./todo.service";
 
@@ -12,6 +13,10 @@ todoRoutes.use("*", async (c, next) => {
 todoRoutes.get("/:id", (c) => {
   const { id } = c.req.param();
   const todo = c.var.todoService.getItem(Number(id));
+
+  if (!todo) {
+    throw new ApiError(404, { message: "Todo not found" });
+  }
 
   return c.json(todo);
 });
