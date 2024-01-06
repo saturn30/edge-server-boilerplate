@@ -4,26 +4,27 @@ import { TodoService } from "./todo.service";
 export const todoRoutes = createApp<{ todoService: TodoService }>();
 
 // 서비스 인스턴스 생성 후 var에 할당
-todoRoutes.use(async (c, next) => {
+todoRoutes.use("*", async (c, next) => {
   c.set("todoService", new TodoService());
   await next();
+});
+
+todoRoutes.get("/:id", (c) => {
+  const { id } = c.req.param();
+  const todo = c.var.todoService.getItem(Number(id));
+
+  return c.json(todo);
 });
 
 todoRoutes.get("/", (c) => {
   return c.json(c.var.todoService.getAll());
 });
 
-todoRoutes.get("/:id", (c) => {
-  const { id } = c.req.param();
-
-  return c.json(c.var.todoService.getItem(Number(id)));
-});
-
 todoRoutes.post("/", async (c) => {
   const body = await c.req.json<{ title: string }>();
-  c.var.todoService.add(body.title);
+  const newTodo = c.var.todoService.add(body.title);
 
-  return c.json({ result: "done" });
+  return c.json(newTodo);
 });
 
 todoRoutes.put("/:id", async (c) => {
