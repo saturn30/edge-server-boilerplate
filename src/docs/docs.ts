@@ -1,5 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { todosDocRoutes } from "../todo/todo.doc";
+import { todosDocRoutes } from "../features/todo/todo.doc";
 
 export const docs = new OpenAPIHono();
 
