@@ -1,5 +1,6 @@
-import { ApiError } from "../../utils/ApiError";
-import { createApp } from "../../utils/createApp";
+import { ApiError } from "~/utils/ApiError";
+import { createApp } from "~/utils/createApp";
+
 import { TodoService } from "./todo.service";
 
 export const todoRoutes = createApp<{ todoService: TodoService }>();
