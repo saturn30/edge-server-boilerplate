@@ -14,6 +14,7 @@
     "@libsql/client": "^0.4.0-pre.7",
     "drizzle-orm": "^0.29.3",
     "hono": "^3.11.11",
+    "worker-auth-providers": "^0.0.13-beta.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
