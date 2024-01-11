@@ -1,5 +1,6 @@
 import { google } from "worker-auth-providers";
-import { GoogleUser } from "./auth.types";
+import { AuthRepository } from "./auth.repository";
+import { GoogleUser, OauthProviders } from "./auth.types";
 
 export class AuthService {
   constructor(
@@ -9,7 +10,8 @@ export class AuthService {
         clientSecret: string;
         redirectUrl: string;
       };
-    }
+    },
+    private authRepository: AuthRepository
   ) {}
 
   getGoogleRedirectUrl = async () => {
@@ -32,5 +34,19 @@ export class AuthService {
     });
 
     return { user };
+  };
+
+  login = async ({
+    provider,
+    providerId,
+  }: {
+    provider: OauthProviders;
+    providerId: string;
+  }) => {
+    const user = this.authRepository.findOne({ provider, providerId });
+    if (!user) {
+      return this.authRepository.insert({ provider, providerId });
+    }
+    return user;
   };
 }

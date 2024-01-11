@@ -1,4 +1,6 @@
+import { getDB } from "~/database/getDB";
 import { createApp } from "~/utils/createApp";
+import { AuthRepository } from "./auth.repository";
 import { AuthService } from "./auth.service";
 
 export const authRoutes = createApp<{ authService: AuthService }>();
@@ -11,7 +13,9 @@ authRoutes.use("*", async (c, next) => {
       redirectUrl: c.env.GOOGLE_REDIRECT_URL,
     },
   };
-  const authService = new AuthService(authKey);
+  const db = getDB(c.env);
+  const authRepository = new AuthRepository(db);
+  const authService = new AuthService(authKey, authRepository);
 
   c.set("authService", authService);
   await next();

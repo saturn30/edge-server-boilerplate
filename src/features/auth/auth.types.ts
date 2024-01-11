@@ -4,3 +4,5 @@ export interface GoogleUser {
   name: string;
   picture: string;
 }
+
+export type OauthProviders = "google" | "github";
