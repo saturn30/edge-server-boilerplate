@@ -7,6 +7,9 @@ export type Bindings = {
 
   AUTH_GOOGLE_CLIENT_ID: string;
   AUTH_GOOGLE_CLIENT_SECRET: string;
+
+  AUTH_JWT_SECRET: string;
+  AUTH_REFRESH_JWT_SECRET: string;
 };
 
 export type Context = HonoContext<{

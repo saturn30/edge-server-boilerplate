@@ -12,7 +12,10 @@ export const authRoutes = createApp<{
 authRoutes.use("*", async (c, next) => {
   const db = getDB(c.env);
   const authRepository = new AuthRepository(db);
-  const authService = new AuthService(authRepository);
+  const authService = new AuthService(authRepository, {
+    access: c.env.AUTH_JWT_SECRET,
+    refresh: c.env.AUTH_REFRESH_JWT_SECRET,
+  });
 
   c.set("authService", authService);
   c.set(
@@ -35,6 +38,12 @@ authRoutes.get("/google", async (c) => {
 
 authRoutes.get("/google/redirect", async (c) => {
   const googleOauthService = c.get("googleOauthService");
-  const user = await googleOauthService.getGoogleUser(c.req.raw.clone());
-  return c.json({ message: "Hello Hono!", user });
+  const authService = c.get("authService");
+
+  const { user } = await googleOauthService.getGoogleUser(c.req.raw.clone());
+  const tokens = await authService.login({
+    provider: "google",
+    providerId: user.id,
+  });
+  return c.json(tokens);
 });
