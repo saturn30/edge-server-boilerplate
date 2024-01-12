@@ -20,6 +20,8 @@ export class GoogleOauthService {
   };
 
   getGoogleUser = async (request: Request) => {
+    console.log(request, this.authKey);
+
     const { user }: { user: GoogleUser } = await google.users({
       options: {
         clientId: this.authKey.clientId,

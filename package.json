@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "wrangler dev -e dev src/index.ts",
+    "dev": "wrangler dev -e dev --port 3001 src/index.ts",
     "deploy": "wrangler deploy --minify src/index.ts",
     "db:gen": "drizzle-kit generate:sqlite",
     "db:push": "drizzle-kit push:sqlite",
