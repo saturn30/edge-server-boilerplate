@@ -21,11 +21,11 @@ export class JwtService {
     };
   };
 
-  verifyAccessToken = async (token: string) => {
+  verifyAccessToken = async (token: string): Promise<{ id: number }> => {
     return verify(token, this.config.access_secret);
   };
 
-  verifyRefreshToken = async (token: string) => {
+  verifyRefreshToken = async (token: string): Promise<{ id: number }> => {
     return await verify(token, this.config.refresh_secret);
   };
 }

@@ -1,4 +1,5 @@
 import { Context as HonoContext, MiddlewareHandler } from "hono";
+import { Variables } from "hono/types";
 
 export type Bindings = {
   DB_AUTH_TOKEN: string;
@@ -16,4 +17,8 @@ export type Context = HonoContext<{
   Bindings: Bindings;
 }>;
 
-export type Middleware = MiddlewareHandler<{ Bindings: Bindings }>;
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export type Middleware<T extends Variables = {}> = MiddlewareHandler<{
+  Bindings: Bindings;
+  Variables: T;
+}>;
