@@ -2,13 +2,14 @@ import { getDB } from "~/database/getDB";
 import { ApiError } from "~/utils/ApiError";
 import { createApp } from "~/utils/createApp";
 
+import { checkAccessToken } from "../auth";
 import { TodoRepository } from "./todo.repository";
 import { TodoService } from "./todo.service";
 
 export const todoRoutes = createApp<{ todoService: TodoService }>();
 
 // 서비스 인스턴스 생성 후 var에 할당
-todoRoutes.use("*", async (c, next) => {
+todoRoutes.use("*", checkAccessToken, async (c, next) => {
   const db = getDB(c.env);
   const todoRepository = new TodoRepository(db);
   c.set("todoService", new TodoService(todoRepository));
