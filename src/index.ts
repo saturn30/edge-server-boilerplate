@@ -1,9 +1,9 @@
 import { swaggerUI } from "@hono/swagger-ui";
 
 import { docs } from "~/docs/docs";
+import { authRoutes } from "~/features/auth/auth";
 import { todoRoutes } from "~/features/todo/todo";
 import { createApp } from "~/utils/createApp";
-import { authRoutes } from "./features/auth/auth";
 
 const app = createApp();
 

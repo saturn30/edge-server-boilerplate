@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception";
 
 export class ApiError extends HTTPException {
-  constructor(status: number, data?: object) {
+  constructor(status: number, data?: object | string) {
     super(
       status,
       data

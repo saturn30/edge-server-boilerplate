@@ -2,6 +2,7 @@ import { getDB } from "~/database/getDB";
 import { createApp } from "~/utils/createApp";
 import { AuthRepository } from "./auth.repository";
 import { AuthService } from "./auth.service";
+import { JwtService } from "./jwt/jwt.service";
 import { GoogleOauthService } from "./oauth/google.service";
 
 export const authRoutes = createApp<{
@@ -12,10 +13,11 @@ export const authRoutes = createApp<{
 authRoutes.use("*", async (c, next) => {
   const db = getDB(c.env);
   const authRepository = new AuthRepository(db);
-  const authService = new AuthService(authRepository, {
-    access: c.env.AUTH_JWT_SECRET,
-    refresh: c.env.AUTH_REFRESH_JWT_SECRET,
+  const jwtService = new JwtService({
+    access_secret: c.env.AUTH_JWT_SECRET,
+    refresh_secret: c.env.AUTH_REFRESH_JWT_SECRET,
   });
+  const authService = new AuthService(authRepository, jwtService);
 
   c.set("authService", authService);
   c.set(
