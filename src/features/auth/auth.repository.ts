@@ -18,6 +18,12 @@ export class AuthRepository {
     });
   };
 
+  findUserById = ({ id }: { id: number }) => {
+    return this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.id, id),
+    });
+  };
+
   insert = ({
     provider,
     providerId,

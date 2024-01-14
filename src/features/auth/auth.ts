@@ -2,6 +2,7 @@ import { getDB } from "~/database/getDB";
 import { createApp } from "~/utils/createApp";
 import { AuthRepository } from "./auth.repository";
 import { AuthService } from "./auth.service";
+import { checkAccessToken } from "./jwt/jwt.middleware";
 import { JwtService } from "./jwt/jwt.service";
 import { GoogleOauthService } from "./oauth/google.service";
 
@@ -29,6 +30,14 @@ authRoutes.use("*", async (c, next) => {
     })
   );
   await next();
+});
+
+authRoutes.get("/me", checkAccessToken, async (c) => {
+  const authService = c.get("authService");
+  const userId = c.get("userId");
+
+  const user = await authService.getUserById(userId);
+  return c.json(user);
 });
 
 authRoutes.get("/google", async (c) => {

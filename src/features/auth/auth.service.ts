@@ -22,4 +22,8 @@ export class AuthService {
 
     return await this.jwtService.createToken(user.id);
   };
+
+  getUserById = async (id: number) => {
+    return await this.authRepository.findUserById({ id });
+  };
 }
