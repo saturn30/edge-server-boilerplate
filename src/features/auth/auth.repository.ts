@@ -5,7 +5,7 @@ import { OauthProviders } from "./auth.types";
 export class AuthRepository {
   constructor(private db: DB) {}
 
-  findOne = ({
+  findByProviderId = ({
     provider,
     providerId,
   }: {

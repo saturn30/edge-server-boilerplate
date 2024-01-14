@@ -15,7 +15,10 @@ export class AuthService {
     provider: OauthProviders;
     providerId: string;
   }) => {
-    const user = await this.authRepository.findOne({ provider, providerId });
+    const user = await this.authRepository.findByProviderId({
+      provider,
+      providerId,
+    });
     if (!user) {
       return await this.authRepository.insert({ provider, providerId });
     }
