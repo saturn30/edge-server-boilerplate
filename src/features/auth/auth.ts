@@ -4,11 +4,13 @@ import { AuthRepository } from "./auth.repository";
 import { AuthService } from "./auth.service";
 import { checkAccessToken } from "./jwt/jwt.middleware";
 import { JwtService } from "./jwt/jwt.service";
+import { GithubOauthService } from "./oauth/github.service";
 import { GoogleOauthService } from "./oauth/google.service";
 
 export const authRoutes = createApp<{
   authService: AuthService;
   googleOauthService: GoogleOauthService;
+  githubOauthService: GithubOauthService;
 }>();
 
 authRoutes.use("*", async (c, next) => {
@@ -27,6 +29,14 @@ authRoutes.use("*", async (c, next) => {
       clientId: c.env.AUTH_GOOGLE_CLIENT_ID,
       clientSecret: c.env.AUTH_GOOGLE_CLIENT_SECRET,
       redirectUrl: `${c.env.SERVER_URL}/auth/google/redirect`,
+    })
+  );
+  c.set(
+    "githubOauthService",
+    new GithubOauthService({
+      clientId: c.env.AUTH_GITHUB_CLIENT_ID,
+      clientSecret: c.env.AUTH_GITHUB_CLIENT_SECRET,
+      redirectUrl: `${c.env.SERVER_URL}/auth/github/redirect`,
     })
   );
   await next();
@@ -54,6 +64,25 @@ authRoutes.get("/google/redirect", async (c) => {
   const { user } = await googleOauthService.getGoogleUser(c.req.raw.clone());
   const tokens = await authService.login({
     provider: "google",
+    providerId: user.id,
+  });
+  return c.json(tokens);
+});
+
+authRoutes.get("/github", async (c) => {
+  const githubOauthService = c.get("githubOauthService");
+  const redirectUrl = await githubOauthService.getGithubRedirectUrl();
+
+  return c.redirect(redirectUrl, 302);
+});
+
+authRoutes.get("/github/redirect", async (c) => {
+  const githubOauthService = c.get("githubOauthService");
+  const authService = c.get("authService");
+
+  const { user } = await githubOauthService.getGithubUser(c.req.raw.clone());
+  const tokens = await authService.login({
+    provider: "github",
     providerId: user.id,
   });
   return c.json(tokens);

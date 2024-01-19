@@ -10,7 +10,7 @@ export class GithubOauthService {
     }
   ) {}
 
-  getGoogleRedirectUrl = async () => {
+  getGithubRedirectUrl = async () => {
     return await github.redirect({
       options: {
         clientId: this.authKey.clientId,
@@ -19,7 +19,7 @@ export class GithubOauthService {
     });
   };
 
-  getGoogleUser = async (request: Request) => {
+  getGithubUser = async (request: Request) => {
     console.log(request, this.authKey);
 
     const { user }: { user: GoogleUser } = await github.users({
